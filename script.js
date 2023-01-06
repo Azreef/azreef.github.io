@@ -1,33 +1,58 @@
-//Canvas
-const CANVAS_WIDTH = canvas.width = 600;
-const CANVAS_HEIGHT = canvas.height = 600;
 const canvas = document.getElementById('canvas');
-const context = canvas.getContext('2d');
-//Sprite
-const playerImage = new Image();
-playerImage.src = 'dragonAttackFramesReversePNG.png';
-const spriteWidth = 237;
-const spriteHeight = 180;
-//Frame
-let gameFrame = 0;
-const staggerFrames = 5;
-let frameX = 0;
+const ctx = canvas.getContext('2d');
+canvas.width = 600;
+canvas.height = 900;
 
-function animate() {
-    context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+//mouse
+const mouse = {
+    x: 10,
+    y: 10,
+    width: 0.1,
+    height: 0.1,
+}
+let canvasPosition = canvas.getBoundingClientRect();
+canvas.addEventListener('mousemove', function(e) {
+    mouse.x = e.x - canvasPosition.left;
+    mouse.y = e.y - canvasPosition.top;
+});
+canvas.addEventListener('mouseleave', function(e) {
+    mouse.x = undefined;
+    mouse.y = undefined;
+});
 
-    if(gameFrame % staggerFrames === 0){
-        if(frameX < 4){
-            frameX++;
-        }
-        else{
-            frameX = 0;
-        }
+class Player {
+    constructor(x,y){
+    this.x = x;
+    this.y = y;
+    this.width = 0;
+    this.height = 0;
+    this.health = 100;
     }
+    draw(){
 
-    context.drawImage(playerImage, frameX * spriteWidth, 4 * spriteHeight, spriteWidth, spriteHeight, 0, 0, spriteWidth, spriteHeight);
-    gameFrame++;
-    requestAnimationFrame(animate);
+    }
+    update() {
+
+    }
 };
 
+function animate() {
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+    handleDefenders();
+    frame++;
+    if (!gameOver) requestAnimationFrame(animate);
+}
 animate();
+
+function collision(first, second){
+    if (!(first.x > second.x + second.width ||
+    first.x + first.width < second.x ||
+    first.y > second.y + second.height ||
+    first.y + first.height < second.y)) {
+        return true;
+        };
+    };
+
+    window.addEventListener('resize', function() {
+    canvasPosition = canvas.getBoundingClientRect();
+});

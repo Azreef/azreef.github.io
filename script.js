@@ -13,8 +13,11 @@ const mouse = {
 let frame = 0;
 
 const levels = [
-    [1, 1, 40],
-    [1, 1, 5]
+    [1, 1, 30],
+    [5, 5, 40],
+    [7, 5, 40],
+    [10, 10, 50],
+    [15, 15, 60],
 ];
 
 let bush = new Image();
@@ -349,7 +352,8 @@ function handleGameStatus()
             {
                 if(buttonCollision(mouse,continueX,continueY,continueW,continueH))
                 {
-
+                    level = level + 1;
+                    restartGame();
                 }
                 else if(buttonCollision(mouse,resX,resY,resW,resH))
                 {

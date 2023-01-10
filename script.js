@@ -8,7 +8,7 @@ let frame = 0;
 //Set Variable
 const levels = [
     [10, 5, 40],
-    [1, 1, 40]
+    [1, 1, 5]
 ];
 
 //Current Game Variable
@@ -129,6 +129,7 @@ class Enemy extends Character{
         this.originTimer = 0;
         this.timer = 0;
         this.score = 10;
+        this.difficulty = 5;
     }
 
     draw(){
@@ -149,7 +150,7 @@ class Enemy extends Character{
 
     update() {
         if(this.timer == 0){
-            this.originTimer = Math.floor(Math.random() * 200) + 120;
+            this.originTimer = Math.floor(Math.random() * ((7 - this.difficulty) * 100)) + ((7 - this.difficulty) * 75);
             this.timer = this.originTimer;
             this.originX = this.x;
             this.originY = this.y;
@@ -169,8 +170,28 @@ class Enemy extends Character{
     }
 };
 
-class Enemy2 extends Character{
-    constructor(x,y){
+class Raven extends Enemy{
+    constructor(){
+        super(Math.floor(Math.random() * 1280), 500)
+        this.width = 128;
+        this.height = 128;
+        this.image = new Image();
+        this.staggerFrame = 5;
+        this.image.src = "raven.png"
+        this.frame = 0;
+        this.originX = 0;
+        this.originY = 0;
+        this.destinationX = 0;
+        this.destinationY = 0;
+        this.originTimer = 0;
+        this.timer = 0;
+        this.score = 10;
+        this.difficulty = 5;
+    }
+};
+
+class Duck extends Enemy{
+    constructor(){
         super(Math.floor(Math.random() * 1280), 500)
         this.width = 128;
         this.height = 82;
@@ -185,43 +206,7 @@ class Enemy2 extends Character{
         this.originTimer = 0;
         this.timer = 0;
         this.score = 20;
-    }
-
-    draw(){
-        if(this.frame == 7){
-            this.frame = 0;
-        }
-
-        if(frame % this.staggerFrame == 0){
-            this.frame++;
-        }
-        
-        ctx.drawImage(this.image, 
-            this.frame * this.width, 0,
-            this.width, this.height,
-            this.x, this.y,
-            this.width, this.height);
-    }
-
-    update() {
-        if(this.timer == 0){
-            this.originTimer = Math.floor(Math.random() * 500) + 300;
-            this.timer = this.originTimer;
-            this.originX = this.x;
-            this.originY = this.y;
-            this.destinationX = Math.floor(Math.random() * 1280);
-            this.destinationY = Math.floor(Math.random() * 500);
-        }
-
-        if(Math.hypot(this.destinationX - this.x, this.destinationY - this.y) < 10){
-            this.x = this.destinationX;
-            this.y = this.destinationY;
-        }
-
-        this.x = lerp(this.originX, this.destinationX, 1 - this.timer/this.originTimer);
-        this.y = lerp(this.originY, this.destinationY, 1 - this.timer/this.originTimer);
-
-        this.timer--;
+        this.difficulty = 3;
     }
 };
 
@@ -230,11 +215,11 @@ function spawnEnemies()
 {
     for(let i = 0; i < levels[level][0]; i++)
     {
-        characters.push(new Enemy(10, 0));
+        characters.push(new Raven(10, 0));
     }
     for(let j = 0; j < levels[level][1]; j++)
     {
-        characters.push(new Enemy2(10, 0));
+        characters.push(new Duck(10, 0));
     }
 }
 
@@ -330,6 +315,7 @@ function handleGameStatus()
         ctx.fillText('Time LEFT: ' + timerSeconds, 130, 450);
         ctx.fillText('Press Any Key to Replay', 130, 550);
     }
+
     if(gameFailed)
     {
         ctx.fillStyle = 'black';

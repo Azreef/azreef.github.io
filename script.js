@@ -36,8 +36,9 @@ let gameFailed = false;
 let gameSuccess = false;
 
 //Audio
-let gunShot = new Audio('gunShot.mp3')
-let hitMark = new Audio('hitMark.mp3')
+let gunShot = new Audio('gunShot.mp3');
+let hitMark = new Audio('hitMark.mp3');
+let clickSound = new Audio('clickSound.mp3');
 
 canvas.addEventListener('mousemove', function(e) {
     mouse.x = e.x - canvas.getBoundingClientRect().left;
@@ -315,48 +316,75 @@ function handleGameStatus()
     //Button
     let continueBtn = new Image();
     let restartBtn = new Image();
+    let replayBtn = new Image();
 
     continueBtn.src = "continue.png";
     restartBtn.src = "restart.png";
-
+    replayBtn.src = "replay.png";
 
 
     if(gameSuccess && !gameFailed)
     {
         ctx.fillStyle = 'black';
-        ctx.font = '60px Arial';
-        ctx.fillText('Level Complete', 130, 300);
+        ctx.font = '80px FredokaOne-Regular';
+
+        if(level <= 3)
+        {
+            ctx.fillText('Level Complete', 100, 300);
+        }
+        else if(level == 4)
+        {
+            ctx.fillText('All Level Complete', 10, 300);
+        }
+        
 
         //Continue
-        let continueX = canvas.width/2;
-        let continueY = 200;
-        let continueW = 400;
-        let continueH = 200;
+        let continueX = canvas.width/2 + 100;
+        let continueY = 170;
+        let continueW = 350;
+        let continueH = 150;
 
-        ctx.drawImage(continueBtn,continueX,continueY,continueW,continueH);
+        if(level <= 3)
+        {
+            ctx.drawImage(continueBtn,continueX,continueY,continueW,continueH);
+        }
+        else if(level == 4)
+        {
+            ctx.drawImage(replayBtn,continueX,continueY,continueW,continueH);
+        }
+        
 
         //Restart
-        let resX = canvas.width/2;
-        let resY = 450;
-        let resW = 400;
-        let resH = 200;
+        let resX = canvas.width/2 + 100;
+        let resY = 350;
+        let resW = 350;
+        let resH = 150;
 
         ctx.drawImage(restartBtn,resX,resY,resW,resH);
 
-        ctx.fillText('Time LEFT: ' + timerSeconds, 130, 450);
-        //ctx.fillText('Press Any Key to Replay', 130, 550);
-
+        ctx.fillText('Time Left: ' + timerSeconds, 100, 450);
+       
         canvas.addEventListener('click', function() {
 
-            if(gameSuccess)
+            if(gameSuccess && !p.shoot)
             {
                 if(buttonCollision(mouse,continueX,continueY,continueW,continueH))
                 {
-                    level = level + 1;
+                    clickSound.play();
+                    if(level <= 4)
+                    {
+                        level = level + 1;
+                    }
+                    else
+                    {
+                        level = 0   
+                    }
+                   
                     restartGame();
                 }
                 else if(buttonCollision(mouse,resX,resY,resW,resH))
                 {
+                    clickSound.play();
                     restartGame();
                 }
             }
@@ -369,27 +397,26 @@ function handleGameStatus()
     if(gameFailed)
     {
         ctx.fillStyle = 'black';
-        ctx.font = '60px Arial';
-        ctx.fillText('Time Over', 130, 300);
-        ctx.fillText('Total Score: ' + currentScore, 130, 450);
+        ctx.font = '80px FredokaOne-Regular';
+        ctx.fillText('Time Over', 100, 300);
+        ctx.fillText('Total Score: ' + currentScore, 100, 450);
 
 
-
-        let resX = canvas.width/2;
-        let resY = 450;
-        let resW = 400;
-        let resH = 200;
+        let resX = canvas.width/2 + 100;
+        let resY = 350;
+        let resW = 350;
+        let resH = 150;
 
         ctx.drawImage(restartBtn,resX,resY,resW,resH);
 
-        //ctx.fillText('Press Any Key to Replay', 130, 550);
 
         canvas.addEventListener('click', function() {
-
-            if(gameFailed)
+            
+            if(gameFailed && !p.shoot)
             {
                 if(buttonCollision(mouse,resX,resY,resW,resH))
                 {
+                    clickSound.play();
                     restartGame();
                 }
             }
@@ -439,6 +466,7 @@ function restartGame()
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    handleGameStatus();
     for (const c of characters){
         c.update();
         c.draw();
@@ -446,7 +474,7 @@ function animate() {
     
     frame++;
     
-    handleGameStatus();
+    
     requestAnimationFrame(animate);
 }
 

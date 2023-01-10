@@ -3,12 +3,22 @@ const ctx = canvas.getContext('2d');
 canvas.width = 1280;
 canvas.height = 720;
 
+const mouse = {
+    x: 10,
+    y: 10,
+    width: 0.1,
+    height: 0.1,
+}
+
 let frame = 0;
 
 const levels = [
     [10, 5, 40],
     [1, 1, 5]
 ];
+
+let bush = new Image();
+bush.src = "bush.png"
 
 //Current Game Variable
 let level = 0;
@@ -26,24 +36,42 @@ let gameSuccess = false;
 let gunShot = new Audio('gunShot.mp3')
 let hitMark = new Audio('hitMark.mp3')
 
-const mouse = {
-    x: 10,
-    y: 10,
-    width: 0.1,
-    height: 0.1,
-}
-
-let canvasPosition = canvas.getBoundingClientRect();
-
 canvas.addEventListener('mousemove', function(e) {
-    mouse.x = e.x - canvasPosition.left;
-    mouse.y = e.y - canvasPosition.top;
+    mouse.x = e.x - canvas.getBoundingClientRect().left;
+    mouse.y = e.y - canvas.getBoundingClientRect().top;
 });
 
 canvas.addEventListener('mouseleave', function(e) {
     mouse.x = undefined;
     mouse.y = undefined;
 });
+
+canvas.addEventListener('click', function() {
+    if(!gameSuccess && !gameFailed)
+    {
+        if(!p.shoot)
+        {
+            p.shoot = true;
+            gunShot.play();
+            
+            for (let i=0; i < characters.length; i++)
+            {
+                if (collision(mouse, characters[i]) && characters[i].width != 320)
+                {
+                    hitMark.play();
+                    currentScore += characters[i].score;
+    
+                    characters.splice(i,1);
+                    if(currentScore >= (levels[level][0]*10) + (levels[level][1]*20))
+                    {
+                        gameSuccess = true;
+                    }
+                }
+            }       
+        }
+    }
+});
+
 window.addEventListener("keydown",function(e) 
 {
     if(gameFailed || gameSuccess)
@@ -53,7 +81,7 @@ window.addEventListener("keydown",function(e)
 });
 
 window.addEventListener('resize', function() {
-    canvasPosition = canvas.getBoundingClientRect();
+    canvas.getBoundingClientRect() = canvas.getBoundingClientRect();
 });
 
 let characters = [];
@@ -241,23 +269,6 @@ characters.push(p);
 //Start Game Timer
 startTimer();
 
-function animate() {
-    ctx.clearRect(0,0,canvas.width, canvas.height);
-
-    for (const c of characters){
-        c.update();
-        c.draw();
-    }
-    
-    frame++;
-    
-    handleGameStatus();
-    requestAnimationFrame(animate);
-    
-}
-
-animate();
-
 function lerp(a, b, n) {
     return (1 - n) * a + n * b;
 }
@@ -272,33 +283,6 @@ function collision(first, second){
         };
 };
 
-
-//Mouse Click Detect
-canvas.addEventListener('click', function() {
-    if(!gameSuccess && !gameFailed)
-    {
-        if(!p.shoot)
-        {
-            p.shoot = true;
-            gunShot.play();
-            
-            for (let i=0; i < characters.length; i++)
-            {
-                if (collision(mouse, characters[i]) && characters[i].width != 320)
-                {
-                    hitMark.play();
-                    currentScore += characters[i].score;
-    
-                    characters.splice(i,1);
-                    if(currentScore >= (levels[level][0]*10) + (levels[level][1]*20))
-                    {
-                        gameSuccess = true;
-                    }
-                }
-            }       
-        }
-    }
-});
 
 //Games Stats
 function handleGameStatus() 
@@ -370,3 +354,22 @@ function restartGame()
     startTimer();
     spawnEnemies();
 }
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (const c of characters){
+        c.update();
+        c.draw();
+    }
+    
+            
+    ctx.drawImage(bush, 0, 0);
+    
+    frame++;
+    
+    handleGameStatus();
+    requestAnimationFrame(animate);
+}
+
+animate();

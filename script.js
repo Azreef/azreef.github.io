@@ -6,20 +6,19 @@ canvas.height = 720;
 let frame = 0;
 
 //Set Variable
-const startRaven = 10;
-const startBird = 5;
-const startEndTimer = 40;
-
-const startTotalEnemy = startRaven + startBird;
-const winningScore = ((startRaven*10) + (startBird*20)); //Raven - 10 Points // Bird - 20 Points
-
+const levels = [
+    [10, 5, 40],
+    [1, 1, 40]
+];
 
 //Current Game Variable
+let level = 0;
+
 let currentScore = 0;
-let totalEnemy = startTotalEnemy;
+let totalEnemy = levels[level][0] + levels[level][1];
 
 let timerSeconds = 0;
-let endTimer = startEndTimer;
+let endTimer = levels[level][2];
 
 let gameFailed = false;
 let gameSuccess = false;
@@ -233,11 +232,11 @@ characters.push(p);
 //Spawn Enemy
 function spawnEnemies()
 {
-    for(let i = 0; i < startRaven; i++)
+    for(let i = 0; i < levels[level][0]; i++)
     {
         characters.push(new Enemy(10, 0));
     }
-    for(let j = 0; j < startBird; j++)
+    for(let j = 0; j < levels[level][1]; j++)
     {
         characters.push(new Enemy2(10, 0));
     }
@@ -289,6 +288,7 @@ canvas.addEventListener('click', function() {
         {
             p.shoot = true;
             gunShot.play();
+            
             for (let i=0; i < characters.length; i++)
             {
                 if (collision(mouse, characters[i]) && i != 0 )
@@ -297,7 +297,7 @@ canvas.addEventListener('click', function() {
                     currentScore += characters[i].score;
     
                     characters.splice(i,1);
-                    if(currentScore >= winningScore)
+                    if(currentScore >= (levels[level][0]*10) + (levels[level][1]*20))
                     {
                         gameSuccess = true;
                     }
@@ -378,11 +378,11 @@ window.addEventListener("keydown",function(e)
 function restartGame()
 {
     currentScore = 0;
-    totalEnemy = startTotalEnemy;
+    totalEnemy = levels[level][0] + levels[level][1];
     gameFailed = false;
     gameSuccess = false;
     timerSeconds = 0;
-    endTimer = startEndTimer;
+    endTimer = levels[level][2];
     characters.splice(1);
     startTimer();
     spawnEnemies();

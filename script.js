@@ -80,10 +80,6 @@ window.addEventListener("keydown",function(e)
     }
 });
 
-window.addEventListener('resize', function() {
-    canvas.getBoundingClientRect() = canvas.getBoundingClientRect();
-});
-
 let characters = [];
 
 class Character {
@@ -153,6 +149,7 @@ class Player extends Character{
 class Enemy extends Character{
     constructor(x,y){
         super(Math.floor(Math.random() * 1280), 500)
+        this.flip = 0;
         this.width = 0;
         this.height = 0;
         this.image = new Image();
@@ -177,9 +174,14 @@ class Enemy extends Character{
         if(frame % this.staggerFrame == 0){
             this.frame++;
         }
+        
+        if(this.destinationX - this.originX < 0)
+            this.flip = 1;
+        else
+            this.flip = 0;
 
         ctx.drawImage(this.image, 
-            this.frame * this.width, 0,
+            this.frame * this.width, this.flip * 128,
             this.width, this.height,
             this.x, this.y,
             this.width, this.height);

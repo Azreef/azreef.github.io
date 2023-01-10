@@ -110,6 +110,8 @@ class Player extends Character{
     }
 
     draw(){
+        ctx.drawImage(bush, 0, 0);
+        
         if(!this.shoot){
             ctx.drawImage(this.image, 
                 0 * this.width, 0, 
@@ -362,7 +364,6 @@ function animate() {
 
     for (const c of characters){
         c.update();
-        ctx.drawImage(bush, 0, 0);
         c.draw();
     }
     

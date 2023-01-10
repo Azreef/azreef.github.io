@@ -224,11 +224,6 @@ class Enemy2 extends Character{
     }
 };
 
-
-//Spawn Player
-let p = new Player(0, 0);
-characters.push(p);
-
 //Spawn Enemy
 function spawnEnemies()
 {
@@ -242,6 +237,9 @@ function spawnEnemies()
     }
 }
 
+//Spawn Player
+let p = new Player(0, 0);
+characters.push(p);
 
 spawnEnemies();
 

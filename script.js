@@ -289,7 +289,7 @@ canvas.addEventListener('click', function() {
             
             for (let i=0; i < characters.length; i++)
             {
-                if (collision(mouse, characters[i]) && i != 0 )
+                if (collision(mouse, characters[i]))
                 {
                     hitMark.play();
                     currentScore += characters[i].score;

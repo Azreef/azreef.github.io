@@ -116,11 +116,11 @@ class Player extends Character{
 class Enemy extends Character{
     constructor(x,y){
         super(Math.floor(Math.random() * 1280), 500)
-        this.width = 128;
-        this.height = 128;
+        this.width = 0;
+        this.height = 0;
         this.image = new Image();
-        this.staggerFrame = 5;
-        this.image.src = "raven.png"
+        this.staggerFrame = 0;
+        this.image.src = ""
         this.frame = 0;
         this.originX = 0;
         this.originY = 0;
@@ -128,8 +128,8 @@ class Enemy extends Character{
         this.destinationY = 0;
         this.originTimer = 0;
         this.timer = 0;
-        this.score = 10;
-        this.difficulty = 5;
+        this.score = 0;
+        this.difficulty = 0;
     }
 
     draw(){
@@ -170,6 +170,26 @@ class Enemy extends Character{
     }
 };
 
+class Pigeon extends Enemy{
+    constructor(){
+        super(Math.floor(Math.random() * 1280), 500)
+        this.width = 128;
+        this.height = 128;
+        this.image = new Image();
+        this.staggerFrame = 15;
+        this.image.src = "pigeon.png"
+        this.frame = 0;
+        this.originX = 0;
+        this.originY = 0;
+        this.destinationX = 0;
+        this.destinationY = 0;
+        this.originTimer = 0;
+        this.timer = 0;
+        this.score = 20;
+        this.difficulty = 3;
+    }
+};
+
 class Raven extends Enemy{
     constructor(){
         super(Math.floor(Math.random() * 1280), 500)
@@ -190,36 +210,16 @@ class Raven extends Enemy{
     }
 };
 
-class Duck extends Enemy{
-    constructor(){
-        super(Math.floor(Math.random() * 1280), 500)
-        this.width = 128;
-        this.height = 82;
-        this.image = new Image();
-        this.staggerFrame = 5;
-        this.image.src = "bird.png"
-        this.frame = 0;
-        this.originX = 0;
-        this.originY = 0;
-        this.destinationX = 0;
-        this.destinationY = 0;
-        this.originTimer = 0;
-        this.timer = 0;
-        this.score = 20;
-        this.difficulty = 3;
-    }
-};
-
 //Spawn Enemy
 function spawnEnemies()
 {
     for(let i = 0; i < levels[level][0]; i++)
     {
-        characters.push(new Raven(10, 0));
+        characters.push(new Pigeon(10, 0));
     }
     for(let j = 0; j < levels[level][1]; j++)
     {
-        characters.push(new Duck(10, 0));
+        characters.push(new Raven(10, 0));
     }
 }
 

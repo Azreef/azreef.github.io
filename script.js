@@ -40,6 +40,8 @@ let gunShot = new Audio('gunShot.mp3');
 let hitMark = new Audio('hitMark.mp3');
 let clickSound = new Audio('clickSound.mp3');
 
+gunShot.volume = 0.3;
+
 canvas.addEventListener('mousemove', function(e) {
     mouse.x = e.x - canvas.getBoundingClientRect().left;
     mouse.y = e.y - canvas.getBoundingClientRect().top;
@@ -473,7 +475,6 @@ function animate() {
     }
     
     frame++;
-    
     
     requestAnimationFrame(animate);
 }

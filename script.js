@@ -5,7 +5,6 @@ canvas.height = 720;
 
 let frame = 0;
 
-//Set Variable
 const levels = [
     [10, 5, 40],
     [1, 1, 5]
@@ -27,7 +26,6 @@ let gameSuccess = false;
 let gunShot = new Audio('gunShot.mp3')
 let hitMark = new Audio('hitMark.mp3')
 
-
 const mouse = {
     x: 10,
     y: 10,
@@ -45,6 +43,17 @@ canvas.addEventListener('mousemove', function(e) {
 canvas.addEventListener('mouseleave', function(e) {
     mouse.x = undefined;
     mouse.y = undefined;
+});
+window.addEventListener("keydown",function(e) 
+{
+    if(gameFailed || gameSuccess)
+    {
+        restartGame();
+    }
+});
+
+window.addEventListener('resize', function() {
+    canvasPosition = canvas.getBoundingClientRect();
 });
 
 let characters = [];
@@ -140,7 +149,7 @@ class Enemy extends Character{
         if(frame % this.staggerFrame == 0){
             this.frame++;
         }
-        
+
         ctx.drawImage(this.image, 
             this.frame * this.width, 0,
             this.width, this.height,
@@ -185,7 +194,7 @@ class Pigeon extends Enemy{
         this.destinationY = 0;
         this.originTimer = 0;
         this.timer = 0;
-        this.score = 20;
+        this.score = 10;
         this.difficulty = 3;
     }
 };
@@ -205,7 +214,7 @@ class Raven extends Enemy{
         this.destinationY = 0;
         this.originTimer = 0;
         this.timer = 0;
-        this.score = 10;
+        this.score = 20;
         this.difficulty = 5;
     }
 };
@@ -349,15 +358,6 @@ function startTimer()
     }, 1000);
 }
 
-//Reset Game
-window.addEventListener("keydown",function(e) 
-{
-    if(gameFailed || gameSuccess)
-    {
-        restartGame();
-    }
-});
-
 function restartGame()
 {
     currentScore = 0;
@@ -370,7 +370,3 @@ function restartGame()
     startTimer();
     spawnEnemies();
 }
-
-window.addEventListener('resize', function() {
-    canvasPosition = canvas.getBoundingClientRect();
-});

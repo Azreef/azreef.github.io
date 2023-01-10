@@ -467,12 +467,13 @@ function restartGame()
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    handleGameStatus();
+    
     for (const c of characters){
         c.update();
         c.draw();
     }
+    
+    handleGameStatus();
     
     frame++;
     

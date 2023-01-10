@@ -308,7 +308,7 @@ function handleGameStatus()
     ctx.fillText("Level: " + (level + 1), 500, 100);
 
     //Timer Bar
-    ctx.strokeStyle = 'crimson';
+    ctx.strokeStyle = 'lightblue';
     ctx.lineWidth = 20;
     ctx.beginPath();
     ctx.moveTo(0, 0);

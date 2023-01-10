@@ -307,12 +307,12 @@ function handleGameStatus()
     //Level
     ctx.fillText("Level: " + (level + 1), 500, 100);
 
-    //Timer
+    //Timer Bar
     ctx.strokeStyle = 'crimson';
     ctx.lineWidth = 20;
     ctx.beginPath();
-    ctx.moveTo(0, 710);
-    ctx.lineTo((timerSeconds / endTimer) * 1280, 710);
+    ctx.moveTo(0, 0);
+    ctx.lineTo((timerSeconds / endTimer) * 1280, 0);
     ctx.stroke();
 
     //Button
@@ -390,9 +390,7 @@ function handleGameStatus()
                     restartGame();
                 }
             }
-            
         });
-
 
     }
 
@@ -468,12 +466,11 @@ function restartGame()
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
+    handleGameStatus();
     for (const c of characters){
         c.update();
         c.draw();
     }
-    
-    handleGameStatus();
     
     frame++;
     

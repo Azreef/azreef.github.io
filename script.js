@@ -254,11 +254,11 @@ function spawnEnemies()
 {
     for(let i = 0; i < levels[level][0]; i++)
     {
-        characters.push(new Pigeon(10, 0));
+        characters.push(new Pigeon());
     }
     for(let j = 0; j < levels[level][1]; j++)
     {
-        characters.push(new Raven(10, 0));
+        characters.push(new Raven());
     }
 }
 

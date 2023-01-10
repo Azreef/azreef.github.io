@@ -111,7 +111,7 @@ class Player extends Character{
 
     draw(){
         ctx.drawImage(bush, 0, 0);
-        
+
         if(!this.shoot){
             ctx.drawImage(this.image, 
                 0 * this.width, 0, 
@@ -356,7 +356,9 @@ function restartGame()
     endTimer = levels[level][2];
     characters.splice(1);
     startTimer();
+    characters = [];
     spawnEnemies();
+    characters.push(p);
 }
 
 function animate() {

@@ -168,6 +168,7 @@ class Enemy extends Character{
         this.timer--;
     }
 };
+
 class Enemy2 extends Character{
     constructor(x,y){
         super(Math.floor(Math.random() * 1280), 500)
@@ -289,7 +290,7 @@ canvas.addEventListener('click', function() {
             
             for (let i=0; i < characters.length; i++)
             {
-                if (collision(mouse, characters[i]))
+                if (collision(mouse, characters[i]) && characters[i].width != 320)
                 {
                     hitMark.play();
                     currentScore += characters[i].score;
@@ -302,9 +303,7 @@ canvas.addEventListener('click', function() {
                 }
             }       
         }
-
     }
-    
 });
 
 //Games Stats

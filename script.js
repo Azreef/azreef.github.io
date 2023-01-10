@@ -237,11 +237,11 @@ function spawnEnemies()
     }
 }
 
+spawnEnemies();
+
 //Spawn Player
 let p = new Player(0, 0);
 characters.push(p);
-
-spawnEnemies();
 
 //Start Game Timer
 startTimer();

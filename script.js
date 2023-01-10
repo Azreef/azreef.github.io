@@ -307,14 +307,6 @@ function handleGameStatus()
     //Level
     ctx.fillText("Level: " + (level + 1), 500, 100);
 
-    //Timer
-    ctx.strokeStyle = 'crimson';
-    ctx.lineWidth = 20;
-    ctx.beginPath();
-    ctx.moveTo(0, 710);
-    ctx.lineTo((timerSeconds / endTimer) * 1280, 710);
-    ctx.stroke();
-
     //Button
     let continueBtn = new Image();
     let restartBtn = new Image();
@@ -467,13 +459,20 @@ function restartGame()
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
+    handleGameStatus();
     for (const c of characters){
         c.update();
         c.draw();
     }
-    
-    handleGameStatus();
+
+    //Timer
+    ctx.strokeStyle = 'crimson';
+    ctx.lineWidth = 20;
+    ctx.beginPath();
+    ctx.moveTo(0, 710);
+    ctx.lineTo((timerSeconds / endTimer) * 1280, 710);
+    ctx.stroke();
     
     frame++;
     

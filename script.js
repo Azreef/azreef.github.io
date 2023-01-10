@@ -13,7 +13,7 @@ const mouse = {
 let frame = 0;
 
 const levels = [
-    [10, 5, 40],
+    [1, 1, 40],
     [1, 1, 5]
 ];
 
@@ -69,14 +69,6 @@ canvas.addEventListener('click', function() {
                 }
             }       
         }
-    }
-});
-
-window.addEventListener("keydown",function(e) 
-{
-    if(gameFailed || gameSuccess)
-    {
-        restartGame();
     }
 });
 
@@ -287,6 +279,16 @@ function collision(first, second){
         };
 };
 
+//Button check collision
+function buttonCollision(first, secondx,secondy,secondw,secondh){
+    if (!(first.x > secondx + secondw ||
+    first.x + first.width < secondx ||
+    first.y > secondy + secondh ||
+    first.y + first.height < secondy)) {
+        return true;
+        };
+};
+
 
 //Games Stats
 function handleGameStatus() 
@@ -296,6 +298,9 @@ function handleGameStatus()
     ctx.font = '80px FredokaOne-Regular';
     ctx.fillText(currentScore, 40, 100);
 
+    //Level
+    ctx.fillText("Level: " + (level + 1), 500, 100);
+
     //Timer
     ctx.strokeStyle = 'crimson';
     ctx.lineWidth = 20;
@@ -304,13 +309,57 @@ function handleGameStatus()
     ctx.lineTo((timerSeconds / endTimer) * 1280, 710);
     ctx.stroke();
 
+    //Button
+    let continueBtn = new Image();
+    let restartBtn = new Image();
+
+    continueBtn.src = "continue.png";
+    restartBtn.src = "restart.png";
+
+
+
     if(gameSuccess && !gameFailed)
     {
         ctx.fillStyle = 'black';
         ctx.font = '60px Arial';
         ctx.fillText('Level Complete', 130, 300);
+
+        //Continue
+        let continueX = canvas.width/2;
+        let continueY = 200;
+        let continueW = 400;
+        let continueH = 200;
+
+        ctx.drawImage(continueBtn,continueX,continueY,continueW,continueH);
+
+        //Restart
+        let resX = canvas.width/2;
+        let resY = 450;
+        let resW = 400;
+        let resH = 200;
+
+        ctx.drawImage(restartBtn,resX,resY,resW,resH);
+
         ctx.fillText('Time LEFT: ' + timerSeconds, 130, 450);
-        ctx.fillText('Press Any Key to Replay', 130, 550);
+        //ctx.fillText('Press Any Key to Replay', 130, 550);
+
+        canvas.addEventListener('click', function() {
+
+            if(gameSuccess)
+            {
+                if(buttonCollision(mouse,continueX,continueY,continueW,continueH))
+                {
+
+                }
+                else if(buttonCollision(mouse,resX,resY,resW,resH))
+                {
+                    restartGame();
+                }
+            }
+            
+        });
+
+
     }
 
     if(gameFailed)
@@ -319,7 +368,29 @@ function handleGameStatus()
         ctx.font = '60px Arial';
         ctx.fillText('Time Over', 130, 300);
         ctx.fillText('Total Score: ' + currentScore, 130, 450);
-        ctx.fillText('Press Any Key to Replay', 130, 550);
+
+
+
+        let resX = canvas.width/2;
+        let resY = 450;
+        let resW = 400;
+        let resH = 200;
+
+        ctx.drawImage(restartBtn,resX,resY,resW,resH);
+
+        //ctx.fillText('Press Any Key to Replay', 130, 550);
+
+        canvas.addEventListener('click', function() {
+
+            if(gameFailed)
+            {
+                if(buttonCollision(mouse,resX,resY,resW,resH))
+                {
+                    restartGame();
+                }
+            }
+        });
+
     }
 }
 

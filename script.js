@@ -362,11 +362,9 @@ function animate() {
 
     for (const c of characters){
         c.update();
+        ctx.drawImage(bush, 0, 0);
         c.draw();
     }
-    
-            
-    ctx.drawImage(bush, 0, 0);
     
     frame++;
     

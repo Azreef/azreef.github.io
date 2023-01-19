@@ -35,6 +35,9 @@ let endTimer = levels[level][2];
 let gameFailed = false;
 let gameSuccess = false;
 
+let howToPlayOpen = false;
+
+
 //Audio
 let gunShot = new Audio('gunShot.mp3');
 let hitMark = new Audio('hitMark.mp3');
@@ -448,6 +451,44 @@ function startTimer()
     }, 1000);
 }
 
+//How to play
+let howToPlayBtn = new Image();
+let howToPlayImg = new Image();
+howToPlayBtn.src = "howToPlayBtn.png";
+howToPlayImg.src = "howToPlayImg.png";
+let hasClicked = false;
+function howToplay()
+{
+
+    ctx.drawImage(howToPlayBtn,1200,30,75,75);
+
+    canvas.addEventListener('click', function() {
+
+        if (buttonCollision(mouse,1200,10,75,75) && !hasClicked)
+        {
+            clickSound.play();
+            if(howToPlayOpen)
+            {
+                howToPlayOpen = false;
+                hasClicked = true;
+            }
+            else if(!howToPlayOpen)
+            {
+                howToPlayOpen = true;
+                hasClicked = true;
+            }
+        }
+    })
+
+
+    if(howToPlayOpen)
+    {
+        ctx.drawImage(howToPlayImg,30,30,700,700);
+    }
+
+}
+
+
 function restartGame()
 {
     currentScore = 0;
@@ -471,7 +512,11 @@ function animate() {
         c.update();
         c.draw();
     }
-    
+
+    howToplay();
+    hasClicked = false;
+
+
     frame++;
     
     requestAnimationFrame(animate);

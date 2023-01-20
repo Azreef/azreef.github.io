@@ -459,9 +459,6 @@ howToPlayImg.src = "howToPlayImg.png";
 let hasClicked = false;
 function howToplay()
 {
-
-    ctx.drawImage(howToPlayBtn,1200,30,75,75);
-
     canvas.addEventListener('click', function() {
 
         if (buttonCollision(mouse,1200,10,75,75) && !hasClicked)
@@ -483,9 +480,9 @@ function howToplay()
 
     if(howToPlayOpen)
     {
-        ctx.drawImage(howToPlayImg,30,30,700,700);
+        ctx.drawImage(howToPlayImg,25,50,1280-100,720-100);
     }
-
+    ctx.drawImage(howToPlayBtn,1200,30,75,75);
 }
 
 
